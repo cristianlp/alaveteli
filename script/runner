@@ -25,7 +25,7 @@ Dir.chdir(alaveteli_dir) do
 
         # If the environment variable PIDFILE is present,
         # write the pid of the daemon process to that file.
-        print "#{pid}\n"
+
         if ENV.has_key? "PIDFILE"
             File.open(ENV["PIDFILE"], 'w') do |fh|
                 fh.puts pid
