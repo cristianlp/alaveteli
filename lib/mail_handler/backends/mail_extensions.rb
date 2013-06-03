@@ -73,7 +73,11 @@ module Mail
             if match
                 encoding = match[1]
                 str = Ruby18.decode_base64(match[2])
-                str = Iconv.conv('UTF-8//IGNORE', fix_encoding(encoding), str)
+                # Adding a space is a workaround for Iconv.conv throwing
+                # an exception if it finds an invalid character at the
+                # end of the string, even with UTF-8//IGNORE:
+                # http://po-ru.com/diary/fixing-invalid-utf-8-in-ruby-revisited/
+                str = Iconv.conv('UTF-8//IGNORE', fix_encoding(encoding), str + " ")[0...-1]
             end
             str
         end
@@ -86,7 +90,11 @@ module Mail
               # Remove trailing = if it exists in a Q encoding
               string = string.sub(/\=$/, '')
               str = Encodings::QuotedPrintable.decode(string)
-              str = Iconv.conv('UTF-8//IGNORE', fix_encoding(encoding), str)
+              # Adding a space is a workaround for Iconv.conv throwing
+              # an exception if it finds an invalid character at the
+              # end of the string, even with UTF-8//IGNORE:
+              # http://po-ru.com/diary/fixing-invalid-utf-8-in-ruby-revisited/
+              str = Iconv.conv('UTF-8//IGNORE', fix_encoding(encoding), str + " ")[0...-1]
           end
           str
         end
