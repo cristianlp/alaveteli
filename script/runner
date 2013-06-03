@@ -19,7 +19,7 @@ Dir.chdir(alaveteli_dir) do
 
         # Load the runner in a subprocess
         pid = fork do
-            `bundle exec rails runner #{ARGV[1]}`
+            exec('bundle exec rails runner #{ARGV[1]}')
             exit 0
         end
 
@@ -34,6 +34,6 @@ Dir.chdir(alaveteli_dir) do
         Process.detach(pid)
     else
         # Not daemon mode
-        `bundle exec rails runner #{ARGV[1]}`
+        exec('bundle exec rails runner #{ARGV[1]}')
     end
 end
